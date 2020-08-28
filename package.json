@@ -1,38 +1,91 @@
 {
-    "name": "your-module",
-    "version": "1.0.0",
-    "description": "Some awesome description about your module",
-    "main": "index.js",
+    "name": "docusaurus-plugin-react-docgen",
+    "version": "0.0.1",
+    "description": "A small plugin that integrates react-docgen with docusaurus 2.x",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "lint": "eslint 'src/index.{ts,js,tsx}'"
+        "test": "jest --silent",
+        "lint": "eslint 'src/index.{ts,js,tsx}'",
+        "build": "pika build"
     },
-    "keywords": [],
+    "keywords": [
+        "docusaurus",
+        "plugin",
+        "react-docgen"
+    ],
     "repository": {
-        "url": "",
+        "url": "https://github.com/atomicpages/docusaurus-plugin-react-docgen",
         "type": "git"
     },
     "author": "Dennis Thompson",
     "license": "MIT",
+    "dependencies": {
+        "@hapi/joi": "^17.0.0",
+        "globby": "^11.0.1"
+    },
+    "peerDependencies": {
+        "react-docgen": "^5.0.0"
+    },
     "devDependencies": {
+        "@babel/parser": "^7.11.4",
         "@djthoms/eslint-config": "^3.0.0",
         "@djthoms/prettier-config": "^2.0.0",
+        "@docusaurus/types": "^2.0.0-alpha.61",
         "@pika/pack": "^0.5.0",
         "@pika/plugin-build-node": "^0.9.2",
         "@pika/plugin-ts-standard-pkg": "^0.9.2",
+        "@types/jest": "^26.0.10",
+        "@types/node": "^14.6.1",
         "eslint": "^7.7.0",
+        "jest": "^26.4.2",
         "prettier": "^2.1.1",
+        "react-docgen": "^5.3.0",
+        "ts-jest": "^26.3.0",
         "typescript": "^4.0.2"
+    },
+    "@pika/pack": {
+        "pipeline": [
+            [
+                "@pika/plugin-ts-standard-pkg",
+                {
+                    "args": [
+                        "--target",
+                        "es2019"
+                    ]
+                }
+            ],
+            [
+                "@pika/plugin-build-node"
+            ]
+        ]
     },
     "prettier": "@djthoms/prettier-config",
     "eslintConfig": {
         "env": {
-            "node": true
+            "node": true,
+            "jest": true
         },
         "extends": [
             "@djthoms/eslint-config",
             "@djthoms/eslint-config/esmodules",
             "@djthoms/eslint-config/typescript"
+        ]
+    },
+    "jest": {
+        "preset": "ts-jest",
+        "collectCoverage": true,
+        "coverageDirectory": "<rootDir>/coverage",
+        "coverageReporters": [
+            "text",
+            "html",
+            "text-summary",
+            "lcov"
+        ],
+        "collectCoverageFrom": [
+            "src/**/*.ts"
+        ],
+        "testPathIgnorePatterns": [
+            "pkg",
+            "node_modules"
         ]
     }
 }
