@@ -85,7 +85,7 @@ export default function plugin(
                 })
             ).filter(Boolean);
         },
-        async contentLoaded({ content, actions }): void {
+        async contentLoaded({ content, actions }): Promise<void> {
             const re = /\.[jt]sx?/gi;
             const { createData, setGlobalData, addRoute } = actions;
 
