@@ -8,12 +8,24 @@ import Joi from '@hapi/joi';
 import reactDocgen from 'react-docgen';
 
 import { ParserOptions } from '@babel/parser';
-import { Plugin, OptionValidationContext, DocusaurusContext } from '@docusaurus/types';
+import { Plugin, OptionValidationContext, DocusaurusContext, RouteConfig } from '@docusaurus/types';
 import { asyncMap } from './utils';
 
 type Handler = (doc: any, definition: any, parser: { parse: (s: string) => {} }) => void;
 
-type Options = {
+type Route = Pick<RouteConfig, 'exact' | 'component' | 'path' | 'priority'>;
+
+type Union =
+    | {
+          global?: undefined | false;
+          route: Route;
+      }
+    | {
+          global: boolean;
+          route?: Route;
+      };
+
+type Options = Union & {
     src: string | string[];
     docgen?: {
         /**
@@ -43,7 +55,7 @@ const readFile = promisify(fs.readFile);
 
 export default function plugin(
     context: DocusaurusContext,
-    { src, docgen = {}, babel = {}, parserOptions }: Options
+    { src, global = false, route, docgen = {}, babel = {}, parserOptions }: Options
 ): Plugin<{ file: string; docgen: Record<any, any> }[]> {
     return {
         name: 'docusaurus-plugin-react-docgen',
@@ -73,15 +85,29 @@ export default function plugin(
                 })
             ).filter(Boolean);
         },
-        async contentLoaded({ content, actions }) {
-            const re = /(?:\.d)?\.[jt]sx?$/gi;
-            const { createData } = actions;
+        async contentLoaded({ content, actions }): void {
+            const re = /\.[jt]sx?/gi;
+            const { createData, setGlobalData, addRoute } = actions;
 
-            for (let i = 0; i < content.length; i++) {
-                await createData(
-                    path.basename(content[i].file.toLowerCase()).replace(re, '.json'),
-                    JSON.stringify(content[i].docgen)
+            const data: Record<string, any> = content.reduce((acc, { file, docgen }) => {
+                acc[path.basename(file).toLowerCase().replace(re, '')] = docgen;
+
+                return acc;
+            }, {});
+
+            if (global) {
+                console.warn(
+                    'Using global data can potentially slow down your entire app. Use with care ❤️'
                 );
+
+                setGlobalData(data);
+            } else {
+                addRoute({
+                    ...route,
+                    modules: {
+                        docgen: await createData('docgen.json', JSON.stringify(data)),
+                    },
+                });
             }
         },
     };
@@ -91,6 +117,8 @@ export const validateOptions = ({ options, validate }: OptionValidationContext<O
     return validate(
         Joi.object({
             src: Joi.alternatives(Joi.string(), Joi.array().min(1).items(Joi.string())).required(),
+            route: Joi.object(),
+            global: Joi.boolean(),
             docgen: Joi.object({
                 resolver: Joi.object().instance(Function),
                 handlers: Joi.alternatives(

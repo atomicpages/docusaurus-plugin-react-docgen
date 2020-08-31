@@ -1,6 +1,6 @@
 type Callback<T, U> = (value: T, index: number, array: T[]) => U;
 
-export const asyncMap = (array: string[], cb: Callback<string, Promise<any>>): Promise<any> => {
+export const asyncMap = <T>(array: T[], cb: Callback<T, Promise<any>>): Promise<any> => {
     const promises = new Array(array.length);
 
     for (let i = 0; i < array.length; i++) {
