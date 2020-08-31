@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "description": "A small plugin that integrates react-docgen with docusaurus 2.x",
     "scripts": {
-        "test": "jest --silent",
+        "test": "echo \"Error: no test specified\" && exit 1",
         "lint": "eslint 'src/index.{ts,js,tsx}'",
         "build": "pika build"
     },
