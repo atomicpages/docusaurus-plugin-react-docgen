@@ -4,7 +4,7 @@ import path from 'path';
 import globby from 'globby';
 import { promisify } from 'util';
 
-import Joi from '@hapi/joi';
+import Joi from 'joi';
 import reactDocgen from 'react-docgen';
 
 import { ParserOptions } from '@babel/parser';
