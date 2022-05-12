@@ -14,6 +14,7 @@ import { asyncMap } from './utils';
 type Handler = (doc: any, definition: any, parser: { parse: (s: string) => {} }) => void;
 
 type Route = Pick<RouteConfig, 'exact' | 'component' | 'path' | 'priority'>;
+type GlobalConfig = { getGlobalKey: (filename: string, docgen: Record<any, any>) => string };
 
 type Union =
     | {
@@ -21,7 +22,7 @@ type Union =
           route: Route;
       }
     | {
-          global: boolean;
+          global: boolean | GlobalConfig;
           route?: Route;
       };
 
@@ -90,7 +91,13 @@ export default function plugin(
             const { createData, setGlobalData, addRoute } = actions;
 
             const data: Record<string, any> = content.reduce((acc, { file, docgen }) => {
-                acc[path.basename(file).toLowerCase().replace(re, '')] = docgen;
+                const key =
+                    global &&
+                    typeof global !== 'boolean' &&
+                    global?.getGlobalKey instanceof Function
+                        ? global.getGlobalKey(file, docgen)
+                        : path.basename(file);
+                acc[key.toLowerCase().replace(re, '')] = docgen;
 
                 return acc;
             }, {});
@@ -118,7 +125,7 @@ export const validateOptions = ({ options, validate }: OptionValidationContext<O
         Joi.object({
             src: Joi.alternatives(Joi.string(), Joi.array().min(1).items(Joi.string())).required(),
             route: Joi.object(),
-            global: Joi.boolean(),
+            global: Joi.alternatives(Joi.boolean(), Joi.object({ getGlobalKey: Joi.function() })),
             docgen: Joi.object({
                 resolver: Joi.object().instance(Function),
                 handlers: Joi.alternatives(
