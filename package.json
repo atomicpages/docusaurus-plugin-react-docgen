@@ -1,70 +1,66 @@
 {
-    "name": "docusaurus-plugin-react-docgen",
-    "version": "0.0.2",
-    "description": "A small plugin that integrates react-docgen with docusaurus 2.x",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "lint": "eslint 'src/index.{ts,js,tsx}'",
-        "build": "pika build"
-    },
-    "keywords": [
-        "docusaurus",
-        "plugin",
-        "react-docgen"
+  "name": "docusaurus-plugin-react-docgen",
+  "version": "0.0.2",
+  "description": "A small plugin that integrates react-docgen with docusaurus 2.x",
+  "keywords": [
+    "docusaurus",
+    "plugin",
+    "react-docgen"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atomicpages/docusaurus-plugin-react-docgen"
+  },
+  "license": "MIT",
+  "author": "Dennis Thompson",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "lint": "eslint src --ext=js,ts,tsx",
+    "prebuild": "del dist",
+    "build": "npm-run-all -p build:*",
+    "build:esm": "swc src -d dist/esm",
+    "build:cjs": "swc src -d dist/cjs -C module.type=commonjs",
+    "build:types": "tsc -p .",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,json}": [
+      "prettier --write",
+      "eslint --fix"
     ],
-    "repository": {
-        "url": "https://github.com/atomicpages/docusaurus-plugin-react-docgen",
-        "type": "git"
-    },
-    "author": "Dennis Thompson",
-    "license": "MIT",
-    "dependencies": {
-        "globby": "^11.0.0",
-        "joi": "^17.0.0"
-    },
-    "peerDependencies": {
-        "react-docgen": "^5.0.0"
-    },
-    "devDependencies": {
-        "@babel/parser": "^7.12.7",
-        "@djthoms/eslint-config": "^3.0.0",
-        "@djthoms/prettier-config": "^2.0.0",
-        "@docusaurus/types": "^2.0.0-alpha.68",
-        "@pika/pack": "^0.5.0",
-        "@pika/plugin-build-node": "^0.9.2",
-        "@pika/plugin-ts-standard-pkg": "^0.9.2",
-        "@types/node": "^14.14.9",
-        "eslint": "^7.14.0",
-        "prettier": "^2.2.0",
-        "react-docgen": "^5.3.1",
-        "typescript": "^4.1.2"
-    },
-    "@pika/pack": {
-        "pipeline": [
-            [
-                "@pika/plugin-ts-standard-pkg",
-                {
-                    "args": [
-                        "--target",
-                        "es2019"
-                    ]
-                }
-            ],
-            [
-                "@pika/plugin-build-node"
-            ]
-        ]
-    },
-    "prettier": "@djthoms/prettier-config",
-    "eslintConfig": {
-        "env": {
-            "node": true,
-            "jest": true
-        },
-        "extends": [
-            "@djthoms/eslint-config",
-            "@djthoms/eslint-config/esmodules",
-            "@djthoms/eslint-config/typescript"
-        ]
-    }
+    "*.{md,yml,yaml}": "prettier --write"
+  },
+  "prettier": "@djthoms/prettier-config",
+  "dependencies": {
+    "glob": "^8.0.3",
+    "superstruct": "^0.16.0"
+  },
+  "devDependencies": {
+    "@babel/parser": "^7.12.7",
+    "@commitlint/cli": "^17.0.2",
+    "@commitlint/config-conventional": "^17.0.2",
+    "@djthoms/eslint-config": "^5.0.0",
+    "@djthoms/prettier-config": "^4.0.0",
+    "@docusaurus/types": "^2.0.0-beta.21",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@swc/cli": "^0.1.57",
+    "@swc/core": "^1.2.204",
+    "@types/glob": "^7.2.0",
+    "@types/node": "^16.0.0",
+    "del-cli": "^4.0.1",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.2",
+    "npm-run-all": "^4.1.5",
+    "react-docgen": "^5.4.2",
+    "semantic-release": "^19.0.2",
+    "typescript": "^4.7.4"
+  },
+  "peerDependencies": {
+    "react-docgen": "^5.0.0"
+  }
 }

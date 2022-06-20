@@ -1,10 +1,16 @@
 {
-    "compilerOptions": {
-        "downlevelIteration": true,
-        "esModuleInterop": true,
-        "target": "ES2020",
-        "module": "ESNext",
-        "moduleResolution": "node"
-    },
-    "include": ["src/"]
+  "compilerOptions": {
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "declaration": true,
+    "declarationMap": true,
+    "declarationDir": "dist/types",
+    "emitDeclarationOnly": true,
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
+    "skipLibCheck": true
+  },
+  "include": ["src/"]
 }

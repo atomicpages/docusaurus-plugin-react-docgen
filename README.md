@@ -13,28 +13,30 @@ yarn add docusaurus-plugin-react-docgen react-docgen
 
 ## Usage
 
-Inside your `docusaurus.config.js` add to the `plugins` field and configure with the `src` option with full glob support :+1:
+Inside your `docusaurus.config.js` add to the `plugins` field and configure with the `src` option
+with full glob support :+1:
 
 ```js
 module.exports = {
-    plugins: [
-        [
-            'docusaurus-plugin-react-docgen',
-            {
-                // pass in a single string or an array of strings
-                src: ['path/to/**/*.tsx', '!path/to/**/*test.*'],
-                route: {
-                    path: '/docs/api',
-                    component: require.resolve('./src/components/MyDataHandler.js'),
-                    exact: true,
-                },
-            },
-        ],
+  plugins: [
+    [
+      'docusaurus-plugin-react-docgen',
+      {
+        // pass in a single string or an array of strings
+        src: ['path/to/**/*.tsx', '!path/to/**/*test.*'],
+        route: {
+          path: '/docs/api',
+          component: require.resolve('./src/components/MyDataHandler.js'),
+          exact: true,
+        },
+      },
     ],
+  ],
 };
 ```
 
-Any pattern supported by [`fast-glob`](https://github.com/mrmlnc/fast-glob) is allowed here (including negations)
+Any pattern supported by [`fast-glob`](https://github.com/mrmlnc/fast-glob) is allowed here
+(including negations)
 
 ## Options
 
