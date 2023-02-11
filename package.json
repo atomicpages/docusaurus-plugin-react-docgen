@@ -1,6 +1,6 @@
 {
   "name": "docusaurus-plugin-react-docgen",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "A small plugin that integrates react-docgen with docusaurus 2.x",
   "keywords": [
     "docusaurus",
