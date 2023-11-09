@@ -1,3 +1,10 @@
+## [0.1.1](https://github.com/atomicpages/docusaurus-plugin-react-docgen/compare/v0.1.0...v0.1.1) (2023-11-09)
+
+### Bug Fixes
+
+- add missing CI setp breaking build
+  ([60d8108](https://github.com/atomicpages/docusaurus-plugin-react-docgen/commit/60d810831595a5596b3f6451bde651f28139eee0))
+
 ## [0.1.0](https://github.com/atomicpages/docusaurus-plugin-react-docgen/compare/v0.0.3...v0.1.0) (2023-02-11)
 
 ### Features
